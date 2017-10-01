@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>hack4dk metasearch Demo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js"></script>
+
+
+<script>
+$( function() {
+    $( "#accordion" ).accordion({
+      collapsible: true
+    });
+  } );
+  </script>
+
+</head>
+<body>
+    <div class="navbar">
+        <div class="navbar-inner">
+            <a class="brand" href="#">Demo</a>
+        </div>
+    </div>
+
+    <div id="main" class="container">
+
+       <input type="text" name="words" id="keywords"> <br>
+
+       <button onclick="myFunction()" class="btn">Search</button>
+
+    </div>
+
+    <div class="graph">
+      
+
+    </div>
+
+
+   <table class="table table-sm table-bordered" id="MyTable" cellspacing="5" >
+     <thead>
+    <tr>
+      <th>Source</th>
+      <th>Counts</th>
+
+    </tr>
+   </thead>
+  <tbody>
+
+  </tbody>
+ </table>
+
+
+
+<script>
+
+  function myFunction()
+   {
+
+      // natmus
+
+    var searchTerm = $('#keywords').val();
+    var data = { query: ''+searchTerm+'' };
+
+    $.ajax({
+      url: 'http://api.natmus.dk/search/public/simple',
+      data: data,
+      dataType: 'json',
+      success: function(data) {
+        //alert('Total results found (natmus):  ' + data.numberOfResultsTotal);
+
+    //  $('#MyTable').after('<tr><td>National Museum of Denmark Open Collections: </td><td>  '
+  //    +data.numberOfResultsTotal+'</td></tr>');
+
+  $('#MyTable tbody').append('<tr><td>National Museum of Denmark Open Collections: </td><td>  '
+  +data.numberOfResultsTotal+'</td></tr>');
+
+
+      }
+    });
+
+
+// FIlm
+
+
+//    var searchTerm = $('#keywords').val();
+    var data = { titlecontains: ''+searchTerm+'' };
+
+    $.ajax({
+      url: 'http://nationalfilmografien.service.dfi.dk/movie.svc/list',
+      data: data,
+      dataType: 'xml',
+      success: function(data) {
+      //  alert('Total results found (Film): ' + $(data).find("MovieListItem").size());
+
+      //$('#MyTable').after('<tr><td>Nationalfilmografien: </td><td>  '+$(data).find("MovieListItem").size()+'</td></tr>');
+
+      $('#MyTable tbody').append('<tr><td>Nationalfilmografien: </td><td>  '+$(data).find("MovieListItem").size()+'</td></tr>');
+
+
+
+      }
+    });
+
+
+
+
+
+// DR pressefoto
+
+
+//    var searchTerm = $('#keywords').val();
+//    var data = { term: ''+searchTerm+'' };
+
+//    $.ajax({
+//      url: 'http://52.58.235.41/dr/drfotosamling/public/api//images/search',
+//      data: data,
+//      dataType: 'json',
+//      success: function(data) {
+//        alert('Total results found (DR press): ' + data.lenght);
+      //  $('#searchResult').val(data.results.collection);
+
+//      }
+//    });
+
+
+$("#main").remove();
+
+
+
+  }
+
+</script>
+
+</body>
+</html>
